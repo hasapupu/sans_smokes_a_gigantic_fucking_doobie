@@ -1,7 +1,6 @@
 extends Healable
 class_name Pie
 
-
 func _init():
 	names = ["Butterscotch Pie", "ButtsPie", "Pie"]
 	heals = [99,99,99]

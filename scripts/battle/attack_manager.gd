@@ -7,7 +7,8 @@ signal attack_done
 
 @onready var masks = get_node("buffer/masks")
 
-var turn_num = 0
+
+@export var turn_num = 0
 var attacks = [load("res://scripts/battle/attacks/attack_base.gd")]
 var heal_attacks = [load("res://scripts/battle/attacks/attack_base.gd")]
 var current_attack : Attack = null

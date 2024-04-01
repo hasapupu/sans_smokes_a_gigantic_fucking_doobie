@@ -8,3 +8,6 @@ func _ready():
 
 func start():
 	done.emit()
+
+func tfReaction():
+	done.emit()

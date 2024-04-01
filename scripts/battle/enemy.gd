@@ -28,6 +28,7 @@ signal done_being_attacked
 
 var act_options = {
 	"Check" : check,
+	"PSI Magnet" : psiMagnet,
 	}
 
 func _init(enemy_name : String, hp : int, df : float):
@@ -208,3 +209,6 @@ func check():
 	vars.main_writer.writer_text = "(enable:z)(sound:mono2)* Enemy 1 ATK 1 DEF\n* Example Text.(pc)"
 	await vars.main_writer.done
 	vars.hud_manager.reset()
+
+func psiMagnet():
+	pass

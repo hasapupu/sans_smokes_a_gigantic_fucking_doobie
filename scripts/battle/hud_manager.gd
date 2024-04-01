@@ -81,7 +81,7 @@ func _process(delta):
 	heart_update()
 
 func display_update():
-	display.name_text.text = settings.player_save.player.name
+	display.name_text.text = "Carti"
 	display.lv_text.text = "LV " + str(settings.player_save.player.lv)
 	display.health_text.text = str(settings.player_save.player.current_hp + settings.player_save.player.current_kr) + " / " + str(settings.player_save.player.max_hp)
 	display.health_text.self_modulate = Color(1,.14,1,1) if(settings.player_save.player.current_kr > 0) else Color.WHITE

@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://tkcsf1ljdqnn"]
+[gd_scene load_steps=41 format=3 uid="uid://tkcsf1ljdqnn"]
 
 [ext_resource type="Texture2D" uid="uid://cbhcc3qrqgn7i" path="res://assets/sprites/battle/enemies/sans_undertale/head/0.png" id="1_2r8j3"]
 [ext_resource type="Texture2D" uid="uid://jtx7aowolbn5" path="res://assets/sprites/battle/enemies/images (1).png" id="2_0gjdx"]
@@ -18,14 +18,12 @@
 [ext_resource type="PackedScene" uid="uid://dccycw0oi0itb" path="res://objects/battle/attack_manager.tscn" id="7_2tvut"]
 [ext_resource type="Texture2D" uid="uid://dwwni3sm5c01o" path="res://assets/sprites/battle/enemies/sans_undertale/head/6.png" id="7_uuvf4"]
 [ext_resource type="Texture2D" uid="uid://tkfrn6c4jswe" path="res://assets/sprites/battle/enemies/sans_undertale/head/eye/0.png" id="8_wmrrv"]
-[ext_resource type="Texture2D" uid="uid://c1lxc0rmvfvu3" path="res://assets/sprites/battle/enemies/pngimg.com - trollface_PNG44.png" id="9_llp58"]
 [ext_resource type="Texture2D" uid="uid://bbap5sf6pf88g" path="res://assets/sprites/battle/enemies/sans_undertale/head/eye/1.png" id="9_r6cby"]
 [ext_resource type="Texture2D" uid="uid://binrk8nwkj501" path="res://assets/sprites/battle/enemies/sans_undertale/torso.png" id="10_peh6k"]
 [ext_resource type="Texture2D" uid="uid://b05o17e400038" path="res://assets/sprites/battle/enemies/sans_undertale/torso_shrug.png" id="11_5tt4b"]
 [ext_resource type="Texture2D" uid="uid://cx7sbjvngblx1" path="res://assets/sprites/battle/enemies/sans_undertale/legs.png" id="12_rt360"]
 [ext_resource type="Shader" path="res://assets/effects/battle_box.gdshader" id="13_b1tlx"]
 [ext_resource type="FontFile" uid="uid://dviicdom810ab" path="res://assets/fonts/sans.ttf" id="15_01c4w"]
-[ext_resource type="Texture2D" uid="uid://bx11p5bdybwfv" path="res://assets/sprites/battle/enemies/doobie.png" id="17_mefj1"]
 
 [sub_resource type="GDScript" id="GDScript_60in0"]
 script/source = "extends BattleRoom
@@ -97,13 +95,7 @@ func psiMagnet():
 	vars.hud_manager.mode = -1
 	vars.player_heart.visible = false
 	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* You attempt to drain Sans' PP...(pc)\"
-	await vars.main_writer.done
-	speech_bubble.visible = true
 	speech_writer.writer_text = \"(Sound:Sans)We aint that close lil bro(pc)\"
-	await speech_writer.done
-	speech_bubble.visible = false
-	vars.player_heart.visible = false
-	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* Damn, rejected(pc)\"
 	await vars.main_writer.done
 	vars.hud_manager.reset()
 "
@@ -149,12 +141,6 @@ animations = [{
 "texture": ExtResource("7_0lj8n")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_llp58")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_tk6b8")
-}, {
-"duration": 1.0,
 "texture": ExtResource("1_2r8j3")
 }, {
 "duration": 1.0,
@@ -168,6 +154,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_0qo5m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_tk6b8")
 }, {
 "duration": 1.0,
 "texture": ExtResource("7_uuvf4")
@@ -185,17 +174,6 @@ animations = [{
 }],
 "loop": true,
 "name": &"flash",
-"speed": 5.0
-}]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_ob4u4"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("17_mefj1")
-}],
-"loop": true,
-"name": &"default",
 "speed": 5.0
 }]
 
@@ -251,10 +229,9 @@ script/source = "extends DialougeManager
 
 @onready var atkManager = get_parent().get_node(\"attack_manager\")
 var dialogueArray = [\"Sup, kid!\",\"You know, at first I wanted to kill you.\",\"But, I started thinking...\",\"What if you lowkey chill like that?\",\"If you can outsmoke me, Ill give up.\"]
-var enemy : Node2D
 
 func start():
-	enemy = vars.enemies.get_child(0)
+	var enemy = vars.enemies.get_child(0)
 	enemy.speech_bubble.visible = true
 	enemy.get_node(\"head\").frame = 3
 	enemy.get_node(\"torso\").frame = 1
@@ -263,17 +240,6 @@ func start():
 	enemy.speech_bubble.visible = false
 	enemy.get_node(\"head\").frame = 0
 	enemy.get_node(\"torso\").frame = 0
-	await get_tree().process_frame
-	done.emit()
-
-func tfReaction():
-	enemy = vars.enemies.get_child(0)
-	enemy.speech_bubble.visible = true
-	enemy.speech_bubble.get_node(\"speech_writer\").visible = true
-	enemy.speech_writer.writer_text = \"(sound:sans)WHAT HAVE YOU DONE TO ME??(pc)\"
-	await enemy.speech_writer.done
-	enemy.speech_bubble.visible = false
-	enemy.speech_bubble.get_node(\"speech_writer\").visible = false
 	await get_tree().process_frame
 	done.emit()
 "
@@ -317,9 +283,6 @@ z_index = -1
 position = Vector2(-6, -54)
 sprite_frames = SubResource("SpriteFrames_sw7ow")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="enemies/example_enemy/head"]
-sprite_frames = SubResource("SpriteFrames_ob4u4")
-
 [node name="speech_bubble" type="NinePatchRect" parent="enemies/example_enemy"]
 visible = false
 material = SubResource("ShaderMaterial_y80lc")
@@ -334,7 +297,6 @@ patch_margin_right = 22
 patch_margin_bottom = 10
 
 [node name="speech_writer" type="RichTextLabel" parent="enemies/example_enemy/speech_bubble"]
-visible = false
 layout_mode = 0
 offset_left = 37.0
 offset_top = 7.0
@@ -376,6 +338,7 @@ visible_characters_behavior = 1
 script = SubResource("GDScript_jri2l")
 
 [node name="player_heart" parent="." instance=ExtResource("7_1vkjp")]
+visible = false
 script = SubResource("GDScript_riu00")
 
 [node name="attack_manager" parent="." instance=ExtResource("7_2tvut")]
