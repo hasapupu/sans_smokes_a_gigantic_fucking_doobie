@@ -1,0 +1,450 @@
+[gd_scene load_steps=46 format=3 uid="uid://tkcsf1ljdqnn"]
+
+[ext_resource type="Texture2D" uid="uid://cbhcc3qrqgn7i" path="res://assets/sprites/battle/enemies/sans_undertale/head/0.png" id="1_2r8j3"]
+[ext_resource type="Texture2D" uid="uid://jtx7aowolbn5" path="res://assets/sprites/battle/enemies/images (1).png" id="2_0gjdx"]
+[ext_resource type="Texture2D" uid="uid://c4v35fxylooav" path="res://assets/sprites/battle/enemies/legs.png" id="2_1c5ny"]
+[ext_resource type="Texture2D" uid="uid://c0fk22bwsicj2" path="res://assets/sprites/battle/enemies/speech_bubble.png" id="2_51m0u"]
+[ext_resource type="Texture2D" uid="uid://dn4sjhsj23syn" path="res://assets/sprites/battle/enemies/sans_undertale/head/1.png" id="2_s0ike"]
+[ext_resource type="PackedScene" uid="uid://cdhye7ndiak02" path="res://objects/battle/hud_manager.tscn" id="3_5e3ix"]
+[ext_resource type="Texture2D" uid="uid://b8q5xk4rj775h" path="res://assets/sprites/battle/enemies/body.png" id="3_7w0us"]
+[ext_resource type="Texture2D" uid="uid://ruiirtvcnvwx" path="res://assets/sprites/battle/enemies/sans_undertale/head/2.png" id="3_d2a6i"]
+[ext_resource type="PackedScene" uid="uid://budogvo5p1iw6" path="res://objects/battle/battle_box.tscn" id="4_4yajr"]
+[ext_resource type="Texture2D" uid="uid://lphq3cfp7j8a" path="res://assets/sprites/battle/enemies/sans_undertale/head/3.png" id="4_i6yqr"]
+[ext_resource type="Texture2D" uid="uid://cpgdbhhqq4ohw" path="res://assets/sprites/battle/enemies/sans_undertale/head/4.png" id="5_0qo5m"]
+[ext_resource type="FontFile" uid="uid://ds6wqfq03pwda" path="res://assets/fonts/main_mono.ttf" id="5_wlkg8"]
+[ext_resource type="Texture2D" uid="uid://cxbk0on8j1d3x" path="res://assets/sprites/battle/enemies/sans_undertale/head/5.png" id="6_tk6b8"]
+[ext_resource type="Texture2D" uid="uid://b0fqvt6y6gke0" path="res://assets/sprites/battle/enemies/head.png" id="7_0lj8n"]
+[ext_resource type="PackedScene" uid="uid://frb40ffyat0v" path="res://objects/battle/player_heart.tscn" id="7_1vkjp"]
+[ext_resource type="PackedScene" uid="uid://dccycw0oi0itb" path="res://objects/battle/attack_manager.tscn" id="7_2tvut"]
+[ext_resource type="Texture2D" uid="uid://dwwni3sm5c01o" path="res://assets/sprites/battle/enemies/sans_undertale/head/6.png" id="7_uuvf4"]
+[ext_resource type="Texture2D" uid="uid://tkfrn6c4jswe" path="res://assets/sprites/battle/enemies/sans_undertale/head/eye/0.png" id="8_wmrrv"]
+[ext_resource type="Texture2D" uid="uid://c1lxc0rmvfvu3" path="res://assets/sprites/battle/enemies/pngimg.com - trollface_PNG44.png" id="9_llp58"]
+[ext_resource type="Texture2D" uid="uid://bbap5sf6pf88g" path="res://assets/sprites/battle/enemies/sans_undertale/head/eye/1.png" id="9_r6cby"]
+[ext_resource type="Texture2D" uid="uid://binrk8nwkj501" path="res://assets/sprites/battle/enemies/sans_undertale/torso.png" id="10_peh6k"]
+[ext_resource type="Texture2D" uid="uid://b05o17e400038" path="res://assets/sprites/battle/enemies/sans_undertale/torso_shrug.png" id="11_5tt4b"]
+[ext_resource type="Texture2D" uid="uid://cx7sbjvngblx1" path="res://assets/sprites/battle/enemies/sans_undertale/legs.png" id="12_rt360"]
+[ext_resource type="Shader" path="res://assets/effects/battle_box.gdshader" id="13_b1tlx"]
+[ext_resource type="FontFile" uid="uid://dviicdom810ab" path="res://assets/fonts/sans.ttf" id="15_01c4w"]
+[ext_resource type="Texture2D" uid="uid://bx11p5bdybwfv" path="res://assets/sprites/battle/enemies/doobie.png" id="17_mefj1"]
+[ext_resource type="VideoStream" path="res://bladee.ogv" id="27_wryi5"]
+[ext_resource type="Texture2D" uid="uid://dw8a6ch2ilx3n" path="res://assets/sprites/shitpostImages/Arrow-PNG-Pic.png" id="28_ybl2i"]
+
+[sub_resource type="GDScript" id="GDScript_60in0"]
+script/source = "extends BattleRoom
+
+func _ready():
+	super._ready()
+	vars.hud_manager.reset()
+	audio.play_music(\"music/harderlovania\")
+"
+
+[sub_resource type="Gradient" id="Gradient_b7kom"]
+colors = PackedColorArray(0.0235294, 0.490196, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fkand"]
+gradient = SubResource("Gradient_b7kom")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="GDScript" id="GDScript_wftwh"]
+script/source = "extends TextureRect
+
+var t = 0.0
+
+func _process(delta):
+	t += delta
+	texture.gradient.offsets[1] = max(sin(t) / 2 + .5, 0)
+"
+
+[sub_resource type="GDScript" id="GDScript_ohi4s"]
+script/source = "extends Enemy
+
+@onready var torso_position = $torso.position
+@onready var head_position = $head.position
+var torso_offset := Vector2.ZERO
+var head_offset := Vector2.ZERO
+var siner := 0.0
+var animation_mode := 1
+
+
+func _init():
+	super._init(\"Sans\",1,1)
+	isDisappointed = false
+	isMoving = true
+
+func walkAway():
+	isDisappointed = true
+	
+func freeze():
+	isMoving = false
+
+func _ready():
+	sprite = $legs
+	damage_anchor = $damage_anchor
+	show_health_bar = false
+	dodge = e_dodge.dodge
+
+func _process(delta):
+	if(isMoving == true):
+		siner += 30 * delta
+		match(animation_mode):
+			0: torso_offset = Vector2(0, 0)
+			1: torso_offset = Vector2(cos(siner / 5), sin(siner / 2.5))
+			2: torso_offset.y = sin(siner / 15) * 4
+			3: torso_offset.y = sin(siner / 18) * 2
+		$torso.position = torso_position + Vector2(torso_offset.x, torso_offset.y / 1.5)
+		$head.position = head_position + (torso_offset + head_offset)
+	if(isDisappointed == true):
+		position = Vector2(position.x - 1, position.y)
+
+func check():
+	vars.hud_manager.mode = -1
+	vars.player_heart.visible = false
+	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* Sans 'befriended your\\n mom' Undertale.\\n The highest enemy in the game.(pc)\"
+	await vars.main_writer.done
+	vars.hud_manager.reset()
+
+func psiMagnet():
+	vars.dialouge_manager.dirtyDict.append(vars.attack_manager.turn_num)
+	vars.hud_manager.mode = -1
+	vars.player_heart.visible = false
+	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* You attempt to drain Sans' PP...(pc)\"
+	await get_tree().create_timer(0.6).timeout
+	vars.scene.get_node(\"Videos/bladeeArrow\").visible = true
+	vars.scene.get_node(\"Videos/bladee\").play()
+	await vars.main_writer.done
+	vars.scene.get_node(\"Videos/bladeeArrow\").visible = false
+	speech_bubble.visible = true
+	speech_writer.writer_text = \"(Sound:Sans)We aint that close lil bro(pc)\"
+	await speech_writer.done
+	speech_bubble.visible = false
+	vars.player_heart.visible = false
+	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* Damn, rejected(pc)\"
+	await vars.main_writer.done
+	vars.hud_manager.reset()
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u1rbl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_rt360")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_1c5ny")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eyef1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7w0us")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_0gjdx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_peh6k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_5tt4b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sw7ow"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_0lj8n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_llp58")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_tk6b8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2r8j3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_s0ike")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_d2a6i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_i6yqr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_0qo5m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_uuvf4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_wmrrv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_r6cby")
+}],
+"loop": true,
+"name": &"flash",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ob4u4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_mefj1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y80lc"]
+shader = ExtResource("13_b1tlx")
+shader_parameter/fgcolor = Vector4(0, 0, 0, 0.5)
+shader_parameter/bgcolor = Vector4(1, 1, 1, 1)
+
+[sub_resource type="GDScript" id="GDScript_uiy3g"]
+script/source = "extends Writer
+"
+
+[sub_resource type="GDScript" id="GDScript_5temn"]
+script/source = "extends HudManager
+
+"
+
+[sub_resource type="GDScript" id="GDScript_yenlp"]
+script/source = "extends BattleBox
+"
+
+[sub_resource type="GDScript" id="GDScript_jri2l"]
+script/source = "extends Writer
+"
+
+[sub_resource type="GDScript" id="GDScript_riu00"]
+script/source = "extends PlayerHeart
+"
+
+[sub_resource type="GDScript" id="GDScript_c0lm0"]
+script/source = "extends AttackManager
+
+var commentaryDict = {0: \"(disable:z)(sound:mono2)* You felt your si- WAIT IS \\n THAT SANS UNDERTALE SMOKING A \\n GIGANTIC FUCKING DOOBIE!?\", 2 : \"(disable:z)(sound:mono2)* It seems like Sans is\\n getting slower with\\n every hit\", 5 : \"(disable:z)(sound:mono2)*You can now smoke in your \\n [ACT] menu!\"}
+var miscCommentaries = [\"(disable:z)(sound:mono2)* You felt your lungs crawling\\n out your chest\", \"(disable:z)(sound:mono2)* If edging is a\\n skibidi chad move, is\\n jelquing beta rizz?\", \"(disable:z)(sound:mono2)* Now thats what I call undertale.\", \"(disable:z)(sound:mono2)* Smells like za\"]
+
+func _init():
+	attacks = [preload(\"res://scripts/battle/attacks/test_attack.gd\")]
+
+func _ready():
+	super._ready()
+
+func set_writer_text():
+	if(commentaryDict.has(turn_num)):
+		vars.main_writer.writer_text = commentaryDict[turn_num] 
+	else:
+		var rng = RandomNumberGenerator.new()
+		vars.main_writer.writer_text = miscCommentaries.pick_random()
+ 
+"
+
+[sub_resource type="GDScript" id="GDScript_vt12r"]
+script/source = "extends DialougeManager
+
+@onready var atkManager = get_parent().get_node(\"attack_manager\")
+var dialogueArray = [\"Sup, kid!\",\"You know, at first I wanted to kill you.\",\"But, I started thinking...\",\"What if you lowkey chill like that?\",\"If you can outsmoke me, Ill give up.\"]
+var enemy : Node2D
+@onready var dirtyDict : Array = []
+
+func start():
+	enemy = vars.enemies.get_child(0)
+	enemy.speech_bubble.visible = true
+	enemy.get_node(\"head\").frame = 3
+	enemy.get_node(\"torso\").frame = 1
+	enemy.speech_writer.writer_text = \"(sound:sans)\"+dialogueArray[atkManager.turn_num]+\"(pc)\"
+	await enemy.speech_writer.done
+	enemy.speech_bubble.visible = false
+	enemy.get_node(\"head\").frame = 0
+	enemy.get_node(\"torso\").frame = 0
+	await get_tree().process_frame
+	done.emit()
+
+func tfReaction():
+	enemy = vars.enemies.get_child(0)
+	enemy.speech_bubble.visible = true
+	enemy.speech_bubble.get_node(\"speech_writer\").visible = true
+	enemy.speech_writer.writer_text = \"(sound:sans)WHAT HAVE YOU DONE TO ME??(pc)\"
+	await enemy.speech_writer.done
+	enemy.speech_bubble.visible = false
+	await get_tree().process_frame
+	done.emit()
+
+func checkDD():
+	print(\"I am made of soul\")
+	if(dirtyDict.has(vars.attack_manager.turn_num)):
+		enemy.freeze()
+		audio.pause_music()
+		vars.scene.get_node(\"Videos\").queue_free()
+		print(\"I am made of flesh\")
+		enemy = vars.enemies.get_child(0)
+		enemy.speech_bubble.visible = true
+		enemy.speech_writer.writer_text = \"(sound:sans)Is this genuinely the level of humor here?(pc)\"
+		await enemy.speech_writer.done
+		enemy.speech_writer.writer_text = \"(sound:sans)Im outta here(pc)\"
+		await enemy.speech_writer.done
+		enemy.speech_bubble.visible = false
+		enemy.walkAway()
+		done.emit()
+	else:
+		await get_tree().create_timer(0.3).timeout
+		done.emit()
+"
+
+[node name="battle_example" type="Node2D"]
+script = SubResource("GDScript_60in0")
+
+[node name="camera" type="Camera2D" parent="."]
+position = Vector2(320, 240)
+ignore_rotation = false
+
+[node name="gradient" type="TextureRect" parent="."]
+offset_left = -1.0
+offset_top = 328.0
+offset_right = 640.0
+offset_bottom = 481.0
+texture = SubResource("GradientTexture2D_fkand")
+script = SubResource("GDScript_wftwh")
+
+[node name="enemies" type="Node2D" parent="."]
+
+[node name="example_enemy" type="Node2D" parent="enemies"]
+position = Vector2(324, 183)
+script = SubResource("GDScript_ohi4s")
+
+[node name="damage_anchor" type="Node2D" parent="enemies/example_enemy"]
+position = Vector2(0, -79)
+
+[node name="legs" type="AnimatedSprite2D" parent="enemies/example_enemy"]
+position = Vector2(-1, 42)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_u1rbl")
+
+[node name="torso" type="AnimatedSprite2D" parent="enemies/example_enemy"]
+position = Vector2(-4, -9.99999)
+scale = Vector2(0.9, 0.9)
+sprite_frames = SubResource("SpriteFrames_eyef1")
+
+[node name="head" type="AnimatedSprite2D" parent="enemies/example_enemy"]
+z_index = -1
+position = Vector2(-6, -54)
+sprite_frames = SubResource("SpriteFrames_sw7ow")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="enemies/example_enemy/head"]
+sprite_frames = SubResource("SpriteFrames_ob4u4")
+
+[node name="speech_bubble" type="NinePatchRect" parent="enemies/example_enemy"]
+visible = false
+material = SubResource("ShaderMaterial_y80lc")
+offset_left = 53.0
+offset_top = -72.0
+offset_right = 233.0
+offset_bottom = 20.0
+texture = ExtResource("2_51m0u")
+patch_margin_left = 31
+patch_margin_top = 44
+patch_margin_right = 22
+patch_margin_bottom = 10
+
+[node name="speech_writer" type="RichTextLabel" parent="enemies/example_enemy/speech_bubble"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 7.0
+offset_right = 169.0
+offset_bottom = 85.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("15_01c4w")
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+visible_characters_behavior = 1
+script = SubResource("GDScript_uiy3g")
+
+[node name="hud_manager" parent="." instance=ExtResource("3_5e3ix")]
+script = SubResource("GDScript_5temn")
+
+[node name="battle_box" parent="." instance=ExtResource("4_4yajr")]
+offset_left = 32.0
+offset_top = 250.0
+offset_right = 607.0
+offset_bottom = 390.0
+script = SubResource("GDScript_yenlp")
+
+[node name="battle_writer" type="RichTextLabel" parent="."]
+clip_contents = false
+offset_left = 52.0
+offset_top = 270.0
+offset_right = 601.0
+offset_bottom = 384.0
+theme_override_colors/font_shadow_color = Color(0.11, 0.11, 0.39, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/normal_font = ExtResource("5_wlkg8")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+scroll_active = false
+autowrap_mode = 0
+visible_characters_behavior = 1
+script = SubResource("GDScript_jri2l")
+
+[node name="player_heart" parent="." instance=ExtResource("7_1vkjp")]
+script = SubResource("GDScript_riu00")
+
+[node name="attack_manager" parent="." instance=ExtResource("7_2tvut")]
+script = SubResource("GDScript_c0lm0")
+
+[node name="dialouge_manager" type="Node2D" parent="."]
+script = SubResource("GDScript_vt12r")
+
+[node name="black_screen" type="ColorRect" parent="."]
+visible = false
+z_index = 255
+offset_right = 640.0
+offset_bottom = 480.0
+color = Color(0, 0, 0, 1)
+
+[node name="white_screen" type="ColorRect" parent="."]
+visible = false
+z_index = 255
+offset_right = 640.0
+offset_bottom = 480.0
+
+[node name="Videos" type="Node2D" parent="."]
+
+[node name="bladee" type="VideoStreamPlayer" parent="Videos"]
+offset_left = 336.0
+offset_top = 194.0
+offset_right = 620.0
+offset_bottom = 269.0
+stream = ExtResource("27_wryi5")
+expand = true
+
+[node name="bladeeArrow" type="Sprite2D" parent="Videos"]
+visible = false
+position = Vector2(397, 260)
+rotation = 1.83989
+scale = Vector2(0.0527694, 0.0570987)
+texture = ExtResource("28_ybl2i")

@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://jief41u5d0jg"]
+
+[ext_resource type="Script" path="res://scripts/battle/bullets/sans/smoke_puff.gd" id="1_pgm02"]
+[ext_resource type="Texture2D" uid="uid://bx8pnmt0fp17s" path="res://assets/sprites/battle/bullet/sans/PC Computer - Undertale - The Core.png" id="2_kft6u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_amp1t"]
+size = Vector2(43, 40)
+
+[node name="bone" type="Node2D"]
+script = ExtResource("1_pgm02")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+offset_left = -39.0
+offset_top = -17.0
+offset_right = 36.0
+offset_bottom = 23.0
+texture = ExtResource("2_kft6u")
+
+[node name="Area2D" type="Area2D" parent="NinePatchRect"]
+
+[node name="collision" type="CollisionShape2D" parent="NinePatchRect/Area2D"]
+position = Vector2(38.5, 20)
+shape = SubResource("RectangleShape2D_amp1t")

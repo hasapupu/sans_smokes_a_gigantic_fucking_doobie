@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://tkcsf1ljdqnn"]
+[gd_scene load_steps=46 format=3 uid="uid://tkcsf1ljdqnn"]
 
 [ext_resource type="Texture2D" uid="uid://cbhcc3qrqgn7i" path="res://assets/sprites/battle/enemies/sans_undertale/head/0.png" id="1_2r8j3"]
 [ext_resource type="Texture2D" uid="uid://jtx7aowolbn5" path="res://assets/sprites/battle/enemies/images (1).png" id="2_0gjdx"]
@@ -26,6 +26,8 @@
 [ext_resource type="Shader" path="res://assets/effects/battle_box.gdshader" id="13_b1tlx"]
 [ext_resource type="FontFile" uid="uid://dviicdom810ab" path="res://assets/fonts/sans.ttf" id="15_01c4w"]
 [ext_resource type="Texture2D" uid="uid://bx11p5bdybwfv" path="res://assets/sprites/battle/enemies/doobie.png" id="17_mefj1"]
+[ext_resource type="VideoStream" path="res://bladee.ogv" id="27_wryi5"]
+[ext_resource type="Texture2D" uid="uid://dw8a6ch2ilx3n" path="res://assets/sprites/shitpostImages/Arrow-PNG-Pic.png" id="28_ybl2i"]
 
 [sub_resource type="GDScript" id="GDScript_60in0"]
 script/source = "extends BattleRoom
@@ -59,16 +61,24 @@ script/source = "extends Enemy
 
 @onready var torso_position = $torso.position
 @onready var head_position = $head.position
-
 var torso_offset := Vector2.ZERO
 var head_offset := Vector2.ZERO
 var siner := 0.0
-
 var animation_mode := 1
+
+
 
 func _init():
 	super._init(\"Sans\",1,1)
+	isDisappointed = false
+	isMoving = true
+
+func walkAway():
+	isDisappointed = true
 	
+func freeze():
+	isMoving = false
+
 func _ready():
 	sprite = $legs
 	damage_anchor = $damage_anchor
@@ -76,28 +86,35 @@ func _ready():
 	dodge = e_dodge.dodge
 
 func _process(delta):
-	siner += 30 * delta
-	match(animation_mode):
-		0: torso_offset = Vector2(0, 0)
-		1: torso_offset = Vector2(cos(siner / 5), sin(siner / 2.5))
-		2: torso_offset.y = sin(siner / 15) * 4
-		3: torso_offset.y = sin(siner / 18) * 2
-	
-	$torso.position = torso_position + Vector2(torso_offset.x, torso_offset.y / 1.5)
-	$head.position = head_position + (torso_offset + head_offset)
+	if(isMoving == true):
+		siner += 30 * delta
+		match(animation_mode):
+			0: torso_offset = Vector2(0, 0)
+			1: torso_offset = Vector2(cos(siner / 5), sin(siner / 2.5))
+			2: torso_offset.y = sin(siner / 15) * 4
+			3: torso_offset.y = sin(siner / 18) * 2
+		$torso.position = torso_position + Vector2(torso_offset.x, torso_offset.y / 1.5)
+		$head.position = head_position + (torso_offset + head_offset)
+	if(isDisappointed == true):
+		position = Vector2(position.x - 1, position.y)
 
 func check():
 	vars.hud_manager.mode = -1
 	vars.player_heart.visible = false
-	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* Sans ''befriended your\\n mom'' Undertale.\\n The highest enemy in the game.(pc)\"
+	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* Sans 'befriended your\\n mom' Undertale.\\n The highest enemy in the game.(pc)\"
 	await vars.main_writer.done
 	vars.hud_manager.reset()
 
 func psiMagnet():
+	vars.dialouge_manager.dirtyDict.append(vars.attack_manager.turn_num)
 	vars.hud_manager.mode = -1
 	vars.player_heart.visible = false
 	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* You attempt to drain Sans' PP...(pc)\"
+	await get_tree().create_timer(0.6).timeout
+	vars.scene.get_node(\"Videos/bladeeArrow\").visible = true
+	vars.scene.get_node(\"Videos/bladee\").play()
 	await vars.main_writer.done
+	vars.scene.get_node(\"Videos/bladeeArrow\").visible = false
 	speech_bubble.visible = true
 	speech_writer.writer_text = \"(Sound:Sans)We aint that close lil bro(pc)\"
 	await speech_writer.done
@@ -252,6 +269,7 @@ script/source = "extends DialougeManager
 @onready var atkManager = get_parent().get_node(\"attack_manager\")
 var dialogueArray = [\"Sup, kid!\",\"You know, at first I wanted to kill you.\",\"But, I started thinking...\",\"What if you lowkey chill like that?\",\"If you can outsmoke me, Ill give up.\"]
 var enemy : Node2D
+@onready var dirtyDict : Array = []
 
 func start():
 	enemy = vars.enemies.get_child(0)
@@ -273,8 +291,33 @@ func tfReaction():
 	enemy.speech_writer.writer_text = \"(sound:sans)WHAT HAVE YOU DONE TO ME??(pc)\"
 	await enemy.speech_writer.done
 	enemy.speech_bubble.visible = false
-	enemy.speech_bubble.get_node(\"speech_writer\").visible = false
 	await get_tree().process_frame
+	done.emit()
+
+func checkDD():
+	enemy = vars.enemies.get_child(0)
+	print(\"I am made of soul\")
+	if(dirtyDict.size() > 0):
+		enemy.isMoving = false
+		audio.pause_music()
+		vars.scene.get_node(\"Videos\").queue_free()
+		print(\"I am made of flesh\")
+		enemy = vars.enemies.get_child(0)
+		enemy.speech_bubble.visible = true
+		enemy.speech_writer.writer_text = \"(sound:sans)Is this your attempt at comedy?(pc)\"
+		await enemy.speech_writer.done
+		enemy.speech_writer.writer_text = \"(sound:sans)Thats it, I'm outta here(pc)\"
+		await enemy.speech_writer.done
+		get_tree().quit()
+	else:
+		await get_tree().create_timer(0.3).timeout
+		done.emit()
+
+func initiateHumor():
+	enemy = vars.enemies.get_child(0)
+	enemy.speech_writer.sounds[\"sans\"] = [\"characters/Instagram Thud Sound Effect ⧸ Vine Boom\"]
+	vars.main_writer.sounds[\"mono1\"] = [\"characters/Instagram Thud Sound Effect ⧸ Vine Boom\"]
+	vars.main_writer.sounds[\"mono2\"] = [\"characters/Instagram Thud Sound Effect ⧸ Vine Boom\"]
 	done.emit()
 "
 
@@ -334,7 +377,6 @@ patch_margin_right = 22
 patch_margin_bottom = 10
 
 [node name="speech_writer" type="RichTextLabel" parent="enemies/example_enemy/speech_bubble"]
-visible = false
 layout_mode = 0
 offset_left = 37.0
 offset_top = 7.0
@@ -349,6 +391,9 @@ script = SubResource("GDScript_uiy3g")
 
 [node name="hud_manager" parent="." instance=ExtResource("3_5e3ix")]
 script = SubResource("GDScript_5temn")
+
+[node name="Node2D" type="Node2D" parent="hud_manager"]
+position = Vector2(173, 183)
 
 [node name="battle_box" parent="." instance=ExtResource("4_4yajr")]
 offset_left = 32.0
@@ -396,3 +441,20 @@ visible = false
 z_index = 255
 offset_right = 640.0
 offset_bottom = 480.0
+
+[node name="Videos" type="Node2D" parent="."]
+
+[node name="bladee" type="VideoStreamPlayer" parent="Videos"]
+offset_left = 336.0
+offset_top = 194.0
+offset_right = 620.0
+offset_bottom = 269.0
+stream = ExtResource("27_wryi5")
+expand = true
+
+[node name="bladeeArrow" type="Sprite2D" parent="Videos"]
+visible = false
+position = Vector2(397, 260)
+rotation = 1.83989
+scale = Vector2(0.0527694, 0.0570987)
+texture = ExtResource("28_ybl2i")

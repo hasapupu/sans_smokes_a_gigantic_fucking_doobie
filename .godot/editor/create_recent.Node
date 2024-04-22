@@ -1,5 +1,11 @@
-VideoStreamPlayer
+CollisionShape2D
+Area2D
+NinePatchRect
 Node2D
+Node
+CharacterBody2D
+Sprite2D
+VideoStreamPlayer
 AnimatedSprite2D
 Label
 RichTextLabel

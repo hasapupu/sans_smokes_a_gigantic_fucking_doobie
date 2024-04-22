@@ -1,0 +1,2 @@
+extends smokePuff
+class_name doobie

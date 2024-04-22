@@ -6,7 +6,9 @@ extends Node
 	"butterscotch_pie" : Pie.new(),
 	"snowman_piece" : SnowmanPiece.new(),
 	"troll_face_steak" : trollFaceSteak.new(),
-	
+	"cream_pie" : creamPie.new(),
+	"funnyinator" : funnyinator.new(),
+
 	#WEAPONS
 	"real_knife" : RealKnife.new(),
 	

@@ -13,6 +13,7 @@ enum e_dodge {
 @onready var speech_bubble = $speech_bubble
 @onready var speech_writer = $speech_bubble/speech_writer
 
+
 var enemy_name : String
 var current_hp : int
 var max_hp : int
@@ -21,8 +22,9 @@ var dodge : e_dodge
 var border_stick := true
 var offset := 0.0 #Offset for border stick
 var damage_siner := 0.0
-
 var show_health_bar : bool = true
+var isDisappointed : bool = false
+var isMoving : bool = true
 
 signal done_being_attacked
 
@@ -36,6 +38,12 @@ func _init(enemy_name : String, hp : int, df : float):
 	self.current_hp = hp
 	self.max_hp = hp
 	self.def = def
+
+func freeze():
+	pass
+
+func walkAway():
+	pass
 
 func attack(damage : float):
 	if(damage >= 0):

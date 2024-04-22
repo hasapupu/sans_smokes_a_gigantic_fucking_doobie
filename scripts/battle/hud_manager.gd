@@ -306,6 +306,7 @@ func inputs():
 				
 		if(Input.is_action_just_pressed("confirm")):
 			use()
+			#if()
 		if(Input.is_action_just_pressed("exit")):
 			reset()
 	if(button_ref == $buttons/mercy):
@@ -361,6 +362,10 @@ func use():
 	disable()
 	item.use(item_index + (item_page - 1) * 4)
 	await item.done
+	if(item is trollFaceSteak):
+		await vars.dialouge_manager.done
+	elif(item is creamPie):
+		await vars.dialouge_manager.done
 	var attack = vars.attack_manager.pre_heal_attack()
 	if vars.battle_box.margin != vars.battle_box.target:
 		await vars.battle_box.resize_finished

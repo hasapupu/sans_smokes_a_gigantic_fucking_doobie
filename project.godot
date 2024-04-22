@@ -118,14 +118,8 @@ hud_toggle={
 ]
 }
 
-[internationalization]
-
-rendering/text_driver="ICU / HarfBuzz / Graphite (Built-in)"
-
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 textures/canvas_textures/default_texture_repeat=1
-rendering_device/driver="gles2"
-renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

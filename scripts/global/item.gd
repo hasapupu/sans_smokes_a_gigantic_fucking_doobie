@@ -47,3 +47,6 @@ func hp_message(amount_gained : int) -> String:
 	if(settings.player_save.player.current_hp >= settings.player_save.player.max_hp): 
 		return "* Your HP was maxed out."
 	return "* You recovered " + str(amount_gained) + " HP!"
+
+func cornLBS():
+	pass

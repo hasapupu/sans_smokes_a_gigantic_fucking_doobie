@@ -11,3 +11,9 @@ func start():
 
 func tfReaction():
 	done.emit()
+
+func checkDD():
+	done.emit()
+
+func initiateHumor():
+	done.emit()

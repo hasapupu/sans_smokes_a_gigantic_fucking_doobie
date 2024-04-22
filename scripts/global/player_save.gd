@@ -17,14 +17,14 @@ class_name PlayerSave
 	}
 
 @export var inventory : Array = [ #Don't erase indexes from this Array!!!!
+	"butterscotch_pie",
+	"snowman_piece",
+	"cream_pie",
+	"funnyinator",
 	"troll_face_steak",
-	"snowman_piece",
 	"butterscotch_pie",
 	"snowman_piece",
 	"snowman_piece",
-	"butterscotch_pie",
-	"snowman_piece",
-	"butterscotch_pie",
 	]
 
 

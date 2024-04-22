@@ -16,6 +16,7 @@ var attack_manager : AttackManager = null
 var enemies : Node2D = null
 var black_screen : ColorRect = null
 
+
 #OVERWORLD
 var player_character : Character = null
 var overworld_hud : OverworldHud = null

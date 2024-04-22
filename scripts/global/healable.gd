@@ -12,6 +12,7 @@ func use(inventory_slot : int):
 		set_hp(amount_gained)
 		ut_items.sort_inventory()
 		await vars.main_writer.done
+		cornLBS()
 		done.emit()
 	elif(vars.scene is OverworldRoom):
 		vars.main_writer.writer_text = get_use_text()
