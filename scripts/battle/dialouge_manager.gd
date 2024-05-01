@@ -17,3 +17,6 @@ func checkDD():
 
 func initiateHumor():
 	done.emit()
+
+func oneHit():
+	done.emit()

@@ -35,7 +35,7 @@ script/source = "extends BattleRoom
 func _ready():
 	super._ready()
 	vars.hud_manager.reset()
-	audio.play_music(\"music/harderlovania\")
+	audio.play(\"music/traplovaniahhhhhhhh\",audio.global_volume * 6)
 "
 
 [sub_resource type="Gradient" id="Gradient_b7kom"]
@@ -318,6 +318,11 @@ func initiateHumor():
 	enemy.speech_writer.sounds[\"sans\"] = [\"characters/Instagram Thud Sound Effect ⧸ Vine Boom\"]
 	vars.main_writer.sounds[\"mono1\"] = [\"characters/Instagram Thud Sound Effect ⧸ Vine Boom\"]
 	vars.main_writer.sounds[\"mono2\"] = [\"characters/Instagram Thud Sound Effect ⧸ Vine Boom\"]
+	done.emit()
+	
+func oneHit():
+	settings.player_save.player.current_hp = 1
+	settings.player_save.player.max_hp = 1
 	done.emit()
 "
 

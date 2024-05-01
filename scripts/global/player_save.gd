@@ -22,9 +22,9 @@ class_name PlayerSave
 	"cream_pie",
 	"funnyinator",
 	"troll_face_steak",
-	"butterscotch_pie",
-	"snowman_piece",
-	"snowman_piece",
+	"cherry",
+	"legendary_hero",
+	"legendary_hero",
 	]
 
 

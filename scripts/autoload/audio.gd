@@ -3,8 +3,8 @@
 extends Node
 
 var AUDIO_PATH: String = "res://assets/audio/" #CANNOT USE UIDS FOR THIS!!!!
-var references = {}
-var global_volume = 1
+@export var references = {}
+var global_volume = 0.2
 var volume_store = global_volume
 var music : Node = null
 var current_sounds = []
@@ -46,6 +46,7 @@ func import_audio(dir_name: String, group: Node):
 			file_name = file.get_next()
 
 func play(sound : String, volume : float = global_volume, pitch : float = 1) -> Node:
+	
 	var n: Node = references[sound]
 	current_sounds.append(n)
 	n.finished.connect(func x(): current_sounds.erase(n))

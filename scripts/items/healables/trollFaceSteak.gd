@@ -2,6 +2,7 @@ extends Healable
 class_name trollFaceSteak
 
 func _init():
+
 	names = ["TrollFace Steak","TFSteak","TFSteak"]
 	heals = [60,60,60]
 

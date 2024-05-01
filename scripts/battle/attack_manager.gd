@@ -10,7 +10,7 @@ signal attack_done
 
 @export var turn_num = 0
 var attacks = [load("res://scripts/battle/attacks/attack_base.gd")]
-var heal_attacks = [load("res://scripts/battle/attacks/healAttackOne.gd")]
+var heal_attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd")]
 var current_attack : Attack = null
 
 func _ready():
@@ -74,7 +74,7 @@ duration : float = -1) -> BBone:
 	return bone
 
 func smoke_puff(type : Bullet.e_type, position : Vector2, x : float, y : float, speed : float,
-offset_top: float, offset_bottom : float, rotation_speed : float, masked = true,
+rotation_speed : float, masked = true,
 duration : float = -1) -> smokePuff:
 	var puff = preload("res://objects/battle/bullets/sans/smoke_puff.tscn").instantiate()
 	puff.masked = masked
@@ -86,12 +86,10 @@ duration : float = -1) -> smokePuff:
 	puff.global_position = position
 	masks.add_child(puff)
 	puff.type = type
-	puff.offset_top = offset_top
-	puff.offset_bottom = offset_bottom
 	return puff
 
 func doobie_bullet(type : Bullet.e_type, position : Vector2, x : float, y : float, speed : float,
-offset_top: float, offset_bottom : float, rotation_speed : float, masked = true,
+rotation_speed : float, masked = true,
 duration : float = -1) -> doobie:
 	var puff = preload("res://objects/battle/bullets/sans/doobie.tscn").instantiate()
 	puff.masked = masked
@@ -103,8 +101,6 @@ duration : float = -1) -> doobie:
 	puff.global_position = position
 	masks.add_child(puff)
 	puff.type = type
-	puff.offset_top = offset_top
-	puff.offset_bottom = offset_bottom
 	return puff
 
 func bone_circle(type : Bullet.e_type, position : Vector2, bone_count : int, radius : float,

@@ -8,6 +8,8 @@ extends Node
 	"troll_face_steak" : trollFaceSteak.new(),
 	"cream_pie" : creamPie.new(),
 	"funnyinator" : funnyinator.new(),
+	"legendary_hero" : legendaryHero.new(),
+	"cherry" : cherry.new(),
 
 	#WEAPONS
 	"real_knife" : RealKnife.new(),
