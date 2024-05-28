@@ -8,20 +8,25 @@ signal attack_done
 @onready var masks = get_node("buffer/masks")
 
 
-@export var turn_num = 0
-var attacks = [load("res://scripts/battle/attacks/attack_base.gd")]
-var heal_attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd")]
+@export var turn_num = 0 :
+	set(value):
+		turn_num = value
+		print(value)
+var attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd"),load("res://scripts/battle/attacks/slamAttack.gd"),load("res://scripts/battle/attacks/platformAttack.gd"),load("res://scripts/battle/attacks/doobieThrow.gd"),load("res://scripts/battle/attacks/pisstack.gd")]
+var heal_attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd"),load("res://scripts/battle/attacks/slamAttack.gd"),load("res://scripts/battle/attacks/platformAttack.gd"),load("res://scripts/battle/attacks/doobieThrow.gd"),load("res://scripts/battle/attacks/pisstack.gd")]
 var current_attack : Attack = null
+var smokedRounds = []
 
 func _ready():
 	attack_done.connect(func(): delete_bullets.emit())
+	print(attacks[wrapi(turn_num,0,len(attacks))])
 
 func set_writer_text():
 	pass
 
 func pre_attack() -> Attack:
 	current_attack = Attack.new()
-	current_attack.set_script(attacks[wrapi(turn_num,0,len(attacks))])
+	current_attack.set_script(heal_attacks[wrapi(turn_num,0,len(heal_attacks))])
 	add_child(current_attack)
 	current_attack.pre_attack()
 	current_attack.attack_finished.connect(func(): attack_done.emit())

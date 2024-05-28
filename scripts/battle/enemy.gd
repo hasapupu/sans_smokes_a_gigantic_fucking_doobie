@@ -31,6 +31,7 @@ signal done_being_attacked
 var act_options = {
 	"Check" : check,
 	"PSI Magnet" : psiMagnet,
+	"Smoke" : smoke,
 	}
 
 func _init(enemy_name : String, hp : int, df : float):
@@ -175,16 +176,25 @@ func post_attack(damage : float):
 	if(current_hp <= 0):
 		death()
 	else:
-		if(damage != -1):
-			vars.attack_manager.pre_attack()
-			vars.dialouge_manager.start()
-			await vars.dialouge_manager.done
-			if vars.battle_box.margin != vars.battle_box.target:
-				await vars.battle_box.resize_finished
-			vars.attack_manager.current_attack.start_attack()
-			vars.attack_manager.turn_num += 1
+		if(damage != -1 && vars.attack_manager.turn_num < 5):
+				vars.attack_manager.pre_attack()
+				vars.dialouge_manager.start()
+				await vars.dialouge_manager.done
+				if vars.battle_box.margin != vars.battle_box.target:
+					await vars.battle_box.resize_finished
+				vars.attack_manager.current_attack.start_attack()
+				vars.attack_manager.turn_num += 1
 		else:
-			vars.attack_manager.pre_heal_attack().start_attack()
+			if(vars.attack_manager.smokedRounds.has(vars.attack_manager.turn_num)):
+				vars.attack_manager.pre_attack()
+				vars.dialouge_manager.start()
+				await vars.dialouge_manager.done
+				if vars.battle_box.margin != vars.battle_box.target:
+					await vars.battle_box.resize_finished
+				vars.attack_manager.current_attack.start_attack()
+				vars.attack_manager.turn_num += 1
+			else:	
+				vars.attack_manager.pre_heal_attack().start_attack()
 
 func death():
 	var dust_enemy = load("res://objects/battle/dusted_enemy.tscn").instantiate()
@@ -219,4 +229,7 @@ func check():
 	vars.hud_manager.reset()
 
 func psiMagnet():
+	pass
+
+func smoke():
 	pass

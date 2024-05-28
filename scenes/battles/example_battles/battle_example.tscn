@@ -123,6 +123,27 @@ func psiMagnet():
 	vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* Damn, rejected(pc)\"
 	await vars.main_writer.done
 	vars.hud_manager.reset()
+	
+func smoke():
+	if(vars.attack_manager.turn_num <= 5):
+		vars.hud_manager.mode = -1
+		vars.player_heart.visible = false
+		vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* You attempt to smoke sans'\\n doobie...(pc)\"
+		await vars.main_writer.done
+		speech_bubble.visible = true
+		speech_writer.writer_text = \"(Sound:Sans)Hands off!(pc)\"
+		await speech_writer.done
+		speech_bubble.visible = false
+		var attack = vars.attack_manager.pre_heal_attack()
+		attack.start_attack()
+	else:
+		vars.hud_manager.mode = -1
+		vars.player_heart.visible = false
+		vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* You take a hit from sans'\\n doobie...(pc)\"
+		await vars.main_writer.done
+		vars.attack_manager.smokedTurns.append(vars.attack_managher.turn_num)
+		var attack = vars.attack_manager.pre_heal_attack()
+		attack.start_attack()
 "
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_u1rbl"]

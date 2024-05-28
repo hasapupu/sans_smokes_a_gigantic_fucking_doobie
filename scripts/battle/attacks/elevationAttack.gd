@@ -31,10 +31,10 @@ func bones_part_one():
 	var bottomRightDoobie = a_vars.attack_manager.doobie_bullet(0,Vector2(490,390),0,0,0,0,false)
 
 	while true:
-		a_vars.attack_manager.smoke_puff(0,bottomLeftDoobie.position,6,-4,20,0,false)
-		a_vars.attack_manager.smoke_puff(0,bottomRightDoobie.position,-6,-4,20,0,false)
+		a_vars.attack_manager.smoke_puff(0,bottomLeftDoobie.position,8,-4,20,0,false)
+		a_vars.attack_manager.smoke_puff(0,bottomRightDoobie.position,-8,-4,20,0,false)
 		await get_tree().create_timer(1.2).timeout
-		a_vars.attack_manager.smoke_puff(0,topLeftDoobie.position,6,4,20,0,false)
-		a_vars.attack_manager.smoke_puff(0,topRightDoobie.position,-6,4,20,0,false)
+		a_vars.attack_manager.smoke_puff(0,topLeftDoobie.position,8,4,20,0,false)
+		a_vars.attack_manager.smoke_puff(0,topRightDoobie.position,-8,4,20,0,false)
 		await get_tree().create_timer(1.2).timeout
 
