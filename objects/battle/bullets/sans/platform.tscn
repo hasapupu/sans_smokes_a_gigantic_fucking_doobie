@@ -10,6 +10,7 @@ size = Vector2(80, 9)
 size = Vector2(80, 9)
 
 [node name="platform" type="Node2D"]
+scale = Vector2(0.6, 1)
 script = ExtResource("1_5iinn")
 
 [node name="platform" type="NinePatchRect" parent="."]
