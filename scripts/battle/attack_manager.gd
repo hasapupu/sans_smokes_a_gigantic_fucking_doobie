@@ -12,9 +12,9 @@ signal attack_done
 	set(value):
 		turn_num = value
 		print(value)
-var attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd"),load("res://scripts/battle/attacks/slamAttack.gd"),load("res://scripts/battle/attacks/platformAttack.gd"),load("res://scripts/battle/attacks/doobieThrow.gd"),load("res://scripts/battle/attacks/pisstack.gd"),load("res://scripts/battle/attacks/duoPlatformAttack.gd")]
-var heal_attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd"),load("res://scripts/battle/attacks/slamAttack.gd"),load("res://scripts/battle/attacks/platformAttack.gd"),load("res://scripts/battle/attacks/doobieThrow.gd"),load("res://scripts/battle/attacks/pisstack.gd"),load("res://scripts/battle/attacks/duoPlatformAttack.gd")]
-#var heal_attacks = [load("res://scripts/battle/attacks/duoPlatformAttack.gd")]
+var attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd"),load("res://scripts/battle/attacks/slamAttack.gd"),load("res://scripts/battle/attacks/platformAttack.gd"),load("res://scripts/battle/attacks/doobieThrow.gd"),load("res://scripts/battle/attacks/pisstack.gd"),load("res://scripts/battle/attacks/duoPlatformAttack.gd"),load("res://scripts/battle/attacks/gravityAttack.gd")]
+var heal_attacks = [load("res://scripts/battle/attacks/healAttackOne.gd"),load("res://scripts/battle/attacks/elevationAttack.gd"),load("res://scripts/battle/attacks/slamAttack.gd"),load("res://scripts/battle/attacks/platformAttack.gd"),load("res://scripts/battle/attacks/doobieThrow.gd"),load("res://scripts/battle/attacks/pisstack.gd"),load("res://scripts/battle/attacks/duoPlatformAttack.gd"),load("res://scripts/battle/attacks/gravityAttack.gd")]
+#var heal_attacks = [load("res://scripts/battle/attacks/gravityAttack.gd")]
 var current_attack : Attack = null
 var smokedRounds = []
 
