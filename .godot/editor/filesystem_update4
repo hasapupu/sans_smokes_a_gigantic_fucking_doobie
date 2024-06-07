@@ -1,6 +1,7 @@
-res://scenes/display_manager.tscn
+res://scenes/battles/example_battles/battle_example.tscn
 res://assets/effects/battle_box.gdshader
 res://assets/effects/mask.gdshader
+res://scenes/display_manager.tscn
 res://scenes/main_menu.tscn
 res://scenes/rooms/example_rooms/room_0.tscn
 res://objects/battle/hud_manager.tscn
@@ -10,7 +11,6 @@ res://objects/battle/battle_box.tscn
 res://objects/battle/attack_manager.tscn
 res://scenes/game_over.tscn
 res://objects/overworld/room_changer.tscn
-res://scenes/battles/example_battles/battle_example.tscn
 res://objects/battle/bullets/sans/bone.tscn
 res://objects/battle/bullets/sans/bone_circle.tscn
 res://objects/battle/bullets/sans/bone_stab.tscn
