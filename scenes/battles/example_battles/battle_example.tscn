@@ -125,7 +125,7 @@ func psiMagnet():
 	vars.hud_manager.reset()
 	
 func smoke():
-	if(vars.attack_manager.turn_num <= 5):
+	if(vars.attack_manager.turn_num < 4):
 		vars.hud_manager.mode = -1
 		vars.player_heart.visible = false
 		vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* You attempt to smoke sans'\\n doobie...(pc)\"
@@ -141,7 +141,7 @@ func smoke():
 		vars.player_heart.visible = false
 		vars.main_writer.writer_text = \"(enable:z)(sound:mono2)* You take a hit from sans'\\n doobie...(pc)\"
 		await vars.main_writer.done
-		vars.attack_manager.smokedTurns.append(vars.attack_managher.turn_num)
+		vars.attack_manager.smokedRounds.append(vars.attack_manager.turn_num)
 		var attack = vars.attack_manager.pre_heal_attack()
 		attack.start_attack()
 "
