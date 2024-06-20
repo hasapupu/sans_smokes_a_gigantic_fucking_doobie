@@ -47,14 +47,17 @@ func walkAway():
 	pass
 
 func attack(damage : float):
-	if(damage >= 0):
+	if(damage >= 0 && vars.attack_manager.turn_num != 10):
 		match(dodge):
 			e_dodge.none:
 				attack_normal(damage)
 			e_dodge.dodge:
 				attack_dodge(damage)
 	else:
-		attack_no_damage(damage)
+		audio.stop_all_sounds()
+		attack_normal(damage)
+		
+		vars.dialouge_manager.setTweening()
 
 func attack_normal(damage : float):
 	await vars.hud_manager.eye.knife.animation_finished
@@ -184,7 +187,7 @@ func post_attack(damage : float):
 					await vars.battle_box.resize_finished
 				vars.attack_manager.current_attack.start_attack()
 				vars.attack_manager.turn_num += 1
-		else:
+		elif(vars.attack_manager.turn_num < 10):
 			if(vars.attack_manager.smokedRounds.has(vars.attack_manager.turn_num)):
 				vars.attack_manager.pre_attack()
 				vars.dialouge_manager.start()
@@ -194,7 +197,10 @@ func post_attack(damage : float):
 				vars.attack_manager.current_attack.start_attack()
 				vars.attack_manager.turn_num += 1
 			else:	
+				print("piss")
 				vars.attack_manager.pre_heal_attack().start_attack()
+		else:
+			death()
 
 func death():
 	var dust_enemy = load("res://objects/battle/dusted_enemy.tscn").instantiate()

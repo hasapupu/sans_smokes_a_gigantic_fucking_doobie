@@ -158,8 +158,6 @@ func smoke():
 		vars.attack_manager.turn_num += 1
 		attack.start_attack()
 	else:
-		vars.hud_manager.mode = -1
-		vars.player_heart.visible = false
 		speech_bubble.visible = true
 		speech_writer.writer_text = \"(Sound:Sans)I think we should stop(pc)\"
 		await speech_writer.done
@@ -286,7 +284,7 @@ script/source = "extends PlayerHeart
 [sub_resource type="GDScript" id="GDScript_c0lm0"]
 script/source = "extends AttackManager
 
-var commentaryDict = {0: \"(disable:z)(sound:mono2)* You felt your si- WAIT IS \\n THAT SANS UNDERTALE SMOKING A \\n GIGANTIC FUCKING DOOBIE!?\", 2 : \"(disable:z)(sound:mono2)* It seems like Sans is\\n getting slower with\\n every hit\", 5 : \"(disable:z)(sound:mono2)*You can now smoke in your \\n [ACT] menu!\", 10 : \"(disable:z)(sound:mono2)* Sans is sparing you! \\nWe ran out of budget, thats \\nwhy your name is still yellow\"}
+var commentaryDict = {0: \"(disable:z)(sound:mono2)* You felt your si- WAIT IS \\n THAT SANS UNDERTALE SMOKING A \\n GIGANTIC FUCKING DOOBIE!?\", 2 : \"(disable:z)(sound:mono2)* It seems like Sans is\\n getting slower with\\n every hit\", 5 : \"(disable:z)(sound:mono2)*You can now smoke in your \\n [ACT] menu!\", 10 : \"(disable:z)(sound:mono2)* Sans is sparing you! \\nWe ran out of budget, \\nthats why your name is still yellow\"}
 var miscCommentaries = [\"(disable:z)(sound:mono2)* You felt your lungs crawling\\n out your chest\", \"(disable:z)(sound:mono2)* If edging is a\\n skibidi chad move, is\\n jelquing beta rizz?\", \"(disable:z)(sound:mono2)* Now thats what I call undertale.\", \"(disable:z)(sound:mono2)* Smells like za\"]
 
 func _init():
@@ -311,11 +309,6 @@ script/source = "extends DialougeManager
 var dialogueArray = [\"Sup, kid!\",\"You know, at first I wanted to kill you.\",\"But, I started thinking...\",\"What if you lowkey chill like that?\",\"If you can outsmoke me, Ill give up.\"]
 var enemy : Node2D
 @onready var dirtyDict : Array = []
-var tweening := false
-
-func setTweening():
-	await get_tree().create_timer(3).timeout
-	tweening = true
 
 func start():
 	enemy = vars.enemies.get_child(0)
@@ -328,7 +321,6 @@ func start():
 	enemy.get_node(\"head\").frame = 0
 	enemy.get_node(\"torso\").frame = 0
 	await get_tree().process_frame
-	print(\"itsGetting\")
 	done.emit()
 
 func tfReaction():
@@ -371,19 +363,6 @@ func oneHit():
 	settings.player_save.player.current_hp = 1
 	settings.player_save.player.max_hp = 1
 	done.emit()
-
-func _process(float):
-
-	if(tweening == true):
-
-		if(vars.scene.get_node(\"Videos/Node2D\").get_children().size() > 0):
-			for i in vars.scene.get_node(\"Videos/Node2D\").get_children():
-				i.position += i.position.direction_to(vars.scene.get_node(\"gasterPoint\").position) / 3
-				if(i.position.floor() == vars.scene.get_node(\"gasterPoint\").position.floor()):
-					i.queue_free()
-		else:
-			vars.scene.get_node(\"gasterPoint\").visible = true
-
 "
 
 [node name="battle_example" type="Node2D"]
@@ -532,7 +511,7 @@ offset_top = 335.0
 offset_right = 192.0
 offset_bottom = 428.0
 stream = ExtResource("29_bv44t")
-volume_db = 9.01
+volume_db = 15.09
 expand = true
 script = ExtResource("29_sr82o")
 
@@ -542,7 +521,7 @@ offset_top = 64.0
 offset_right = 153.0
 offset_bottom = 154.0
 stream = ExtResource("31_0e0xv")
-volume_db = 9.01
+volume_db = 10.32
 expand = true
 script = ExtResource("29_sr82o")
 
@@ -552,7 +531,7 @@ offset_top = 74.0
 offset_right = 329.0
 offset_bottom = 171.0
 stream = ExtResource("32_kqtyk")
-volume_db = 9.01
+volume_db = 10.32
 expand = true
 script = ExtResource("29_sr82o")
 
@@ -562,7 +541,7 @@ offset_top = 50.0
 offset_right = 593.0
 offset_bottom = 156.0
 stream = ExtResource("32_sn88w")
-volume_db = 9.01
+volume_db = 10.32
 expand = true
 script = ExtResource("29_sr82o")
 
@@ -572,13 +551,12 @@ offset_top = 217.0
 offset_right = 619.0
 offset_bottom = 315.0
 stream = ExtResource("33_ql53h")
-volume_db = 9.01
+volume_db = 10.89
 expand = true
 script = ExtResource("29_sr82o")
 
 [node name="gasterPoint" type="Node2D" parent="."]
-visible = false
-position = Vector2(268, 174)
+position = Vector2(317, 164)
 script = ExtResource("35_ntape")
 
 [node name="AnimatedSprite2D" type="Sprite2D" parent="gasterPoint"]
@@ -591,36 +569,8 @@ position = Vector2(4, -67)
 scale = Vector2(2.42857, 2.23684)
 texture = ExtResource("36_qg2ka")
 
-[node name="speech_bubble" type="NinePatchRect" parent="gasterPoint"]
-visible = false
-material = SubResource("ShaderMaterial_y80lc")
-offset_left = 16.0
-offset_top = -84.0
-offset_right = 196.0
-offset_bottom = 8.0
-texture = ExtResource("2_51m0u")
-patch_margin_left = 31
-patch_margin_top = 44
-patch_margin_right = 22
-patch_margin_bottom = 10
-
-[node name="speech_writer" type="RichTextLabel" parent="gasterPoint/speech_bubble"]
-layout_mode = 0
-offset_left = 37.0
-offset_top = 7.0
-offset_right = 169.0
-offset_bottom = 85.0
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("15_01c4w")
-theme_override_font_sizes/normal_font_size = 14
-bbcode_enabled = true
-visible_characters_behavior = 1
-script = SubResource("GDScript_uiy3g")
-
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer" to="Videos/Node2D/VideoStreamPlayer" method="_on_finished"]
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer2" to="Videos/Node2D/VideoStreamPlayer2" method="_on_finished"]
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer3" to="Videos/Node2D/VideoStreamPlayer3" method="_on_finished"]
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer4" to="Videos/Node2D/VideoStreamPlayer4" method="_on_finished"]
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer5" to="Videos/Node2D/VideoStreamPlayer5" method="_on_finished"]
-[connection signal="visibility_changed" from="gasterPoint" to="gasterPoint" method="_on_visibility_changed"]
-[connection signal="done" from="gasterPoint/speech_bubble/speech_writer" to="gasterPoint" method="_on_speech_writer_done"]

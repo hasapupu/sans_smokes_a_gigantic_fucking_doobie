@@ -20,3 +20,6 @@ func initiateHumor():
 
 func oneHit():
 	done.emit()
+
+func removeShit():
+	done.emit()
