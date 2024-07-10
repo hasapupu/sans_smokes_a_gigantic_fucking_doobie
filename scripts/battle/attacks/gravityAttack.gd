@@ -3,7 +3,7 @@ extends Attack
 var a_vars : vars = vars
 
 func _init():
-	frames = 500
+	frames = 350
 
 func pre_attack():
 	a_vars.player_heart.heart_mode = PlayerHeart.e_heart_mode.blue

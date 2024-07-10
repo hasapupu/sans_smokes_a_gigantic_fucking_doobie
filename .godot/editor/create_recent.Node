@@ -1,6 +1,6 @@
 Sprite2D
-AnimatedSprite2D
 Node2D
+AnimatedSprite2D
 VideoStreamPlayer
 CollisionShape2D
 Area2D

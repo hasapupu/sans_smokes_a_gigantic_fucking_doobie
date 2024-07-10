@@ -374,7 +374,13 @@ func use():
 func mercy():
 	audio.play("menu/menu_select")
 	disable()
-	var attack = vars.attack_manager.pre_heal_attack()
-	if vars.battle_box.margin != vars.battle_box.target:
-		await vars.battle_box.resize_finished
-	attack.start_attack()
+	if(vars.attack_manager.turn_num != 10):
+		var attack = vars.attack_manager.pre_heal_attack()
+		if vars.battle_box.margin != vars.battle_box.target:
+			await vars.battle_box.resize_finished
+		attack.start_attack()
+	else:
+		audio.stop_all_sounds()
+		vars.enemies.visible = false
+		vars.dialouge_manager.kill = false
+		vars.dialouge_manager.tweening = true

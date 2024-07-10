@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://tkcsf1ljdqnn"]
+[gd_scene load_steps=57 format=3 uid="uid://tkcsf1ljdqnn"]
 
 [ext_resource type="Texture2D" uid="uid://cbhcc3qrqgn7i" path="res://assets/sprites/battle/enemies/sans_undertale/head/0.png" id="1_2r8j3"]
 [ext_resource type="Texture2D" uid="uid://jtx7aowolbn5" path="res://assets/sprites/battle/enemies/images (1).png" id="2_0gjdx"]
@@ -34,6 +34,8 @@
 [ext_resource type="VideoStream" path="res://448057794_8460537677343330_5250877237287881112_n.ogv" id="32_kqtyk"]
 [ext_resource type="VideoStream" path="res://446136665_7294750663964442_8934742609031530917_n.ogv" id="32_sn88w"]
 [ext_resource type="VideoStream" path="res://448056714_7357747384334622_839207123072359895_n.ogv" id="33_ql53h"]
+[ext_resource type="Texture2D" uid="uid://qwt2olm8evec" path="res://assets/sprites/shitpostImages/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTEyL3JtNjE0LXBkZm1hNi1wZGZhbW91c3BhaW50aW5nMDk1MDAxYS0wMS1pbWFnZS5wbmc-2750263354.png" id="35_4fseo"]
+[ext_resource type="Script" path="res://scenes/battles/example_battles/me.gd" id="35_dpdi6"]
 [ext_resource type="Texture2D" uid="uid://c6ggvvmqrsd0b" path="res://assets/sprites/battle/enemies/gaster/gBod.png" id="35_fv460"]
 [ext_resource type="Script" path="res://scenes/battles/example_battles/gasterPoint.gd" id="35_ntape"]
 [ext_resource type="Texture2D" uid="uid://065ymv5dxsnn" path="res://assets/sprites/battle/enemies/gaster/gHead.png" id="36_qg2ka"]
@@ -163,6 +165,7 @@ func smoke():
 		speech_bubble.visible = true
 		speech_writer.writer_text = \"(Sound:Sans)I think we should stop(pc)\"
 		await speech_writer.done
+		speech_bubble.visible = false
 		vars.hud_manager.reset()
 "
 
@@ -286,7 +289,7 @@ script/source = "extends PlayerHeart
 [sub_resource type="GDScript" id="GDScript_c0lm0"]
 script/source = "extends AttackManager
 
-var commentaryDict = {0: \"(disable:z)(sound:mono2)* You felt your si- WAIT IS \\n THAT SANS UNDERTALE SMOKING A \\n GIGANTIC FUCKING DOOBIE!?\", 2 : \"(disable:z)(sound:mono2)* It seems like Sans is\\n getting slower with\\n every hit\", 5 : \"(disable:z)(sound:mono2)*You can now smoke in your \\n [ACT] menu!\", 10 : \"(disable:z)(sound:mono2)* Sans is sparing you! \\nWe ran out of budget, thats \\nwhy your name is still yellow\"}
+var commentaryDict = {0: \"(disable:z)(sound:mono2)* You felt your si- WAIT IS \\n THAT SANS UNDERTALE SMOKING A \\n GIGANTIC FUCKING DOOBIE!?\", 2 : \"(disable:z)(sound:mono2)* It seems like Sans is\\n getting slower with\\n every hit\", 5 : \"(disable:z)(sound:mono2)* You can now smoke in your \\n [ACT] menu!\", 10 : \"(disable:z)(sound:mono2)* Sans is sparing you! \\nWe ran out of budget, that's \\nwhy your name is still yellow\"}
 var miscCommentaries = [\"(disable:z)(sound:mono2)* You felt your lungs crawling\\n out your chest\", \"(disable:z)(sound:mono2)* If edging is a\\n skibidi chad move, is\\n jelquing beta rizz?\", \"(disable:z)(sound:mono2)* Now thats what I call undertale.\", \"(disable:z)(sound:mono2)* Smells like za\"]
 
 func _init():
@@ -308,10 +311,11 @@ func set_writer_text():
 script/source = "extends DialougeManager
 
 @onready var atkManager = get_parent().get_node(\"attack_manager\")
-var dialogueArray = [\"Sup, kid!\",\"You know, at first I wanted to kill you.\",\"But, I started thinking...\",\"What if you lowkey chill like that?\",\"If you can outsmoke me, Ill give up.\"]
+var dialogueArray = [\"Sup, kid!\",\"You know, at first I wanted to kill you.\",\"But, I started thinking...\",\"What if you lowkey chill fr?\",\"If you can outsmoke me, Ill give up.\"]
 var enemy : Node2D
 @onready var dirtyDict : Array = []
 var tweening := false
+var kill := true
 
 func setTweening():
 	await get_tree().create_timer(3).timeout
@@ -382,7 +386,32 @@ func _process(float):
 				if(i.position.floor() == vars.scene.get_node(\"gasterPoint\").position.floor()):
 					i.queue_free()
 		else:
-			vars.scene.get_node(\"gasterPoint\").visible = true
+			if(kill == true):
+				vars.scene.get_node(\"gasterPoint\").visible = true
+			else:
+				tweening = false
+				vars.scene.get_node(\"me\").visible = true
+				audio.play(\"music/sans\",audio.global_volume * 6)
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble\").visible = true
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)Hey, I'm the developer of this game.\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)I'm here becouse I genuinely have no idea how to finish this game.\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)So I'll take this opprtunity to plug my other stuff.\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)You can find out how I made this on my youtube channel,cornL games.\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)Along with other devlogs on Mythos, the main game I'm working on.\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)It's supposed to be quite similar to undertale, so hopefully you'll like it.\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)I guess that's everything...\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble/speech_writer\").writer_text = \"(sound:mono1)Bye!\"
+				await get_tree().create_timer(5).timeout
+				vars.scene.get_node(\"me\").get_node(\"speech_bubble\").visible = false
+				get_tree().quit()
+
 
 "
 
@@ -617,6 +646,42 @@ bbcode_enabled = true
 visible_characters_behavior = 1
 script = SubResource("GDScript_uiy3g")
 
+[node name="me" type="Node2D" parent="."]
+visible = false
+position = Vector2(268, 174)
+script = ExtResource("35_dpdi6")
+
+[node name="AnimatedSprite2D" type="Sprite2D" parent="me"]
+position = Vector2(28, -51)
+scale = Vector2(0.5, 0.455)
+texture = ExtResource("35_4fseo")
+
+[node name="speech_bubble" type="NinePatchRect" parent="me"]
+visible = false
+material = SubResource("ShaderMaterial_y80lc")
+offset_left = 16.0
+offset_top = -84.0
+offset_right = 196.0
+offset_bottom = 8.0
+texture = ExtResource("2_51m0u")
+patch_margin_left = 31
+patch_margin_top = 44
+patch_margin_right = 22
+patch_margin_bottom = 10
+
+[node name="speech_writer" type="RichTextLabel" parent="me/speech_bubble"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 7.0
+offset_right = 169.0
+offset_bottom = 85.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("15_01c4w")
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+visible_characters_behavior = 1
+script = SubResource("GDScript_uiy3g")
+
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer" to="Videos/Node2D/VideoStreamPlayer" method="_on_finished"]
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer2" to="Videos/Node2D/VideoStreamPlayer2" method="_on_finished"]
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer3" to="Videos/Node2D/VideoStreamPlayer3" method="_on_finished"]
@@ -624,3 +689,5 @@ script = SubResource("GDScript_uiy3g")
 [connection signal="finished" from="Videos/Node2D/VideoStreamPlayer5" to="Videos/Node2D/VideoStreamPlayer5" method="_on_finished"]
 [connection signal="visibility_changed" from="gasterPoint" to="gasterPoint" method="_on_visibility_changed"]
 [connection signal="done" from="gasterPoint/speech_bubble/speech_writer" to="gasterPoint" method="_on_speech_writer_done"]
+[connection signal="visibility_changed" from="me" to="me" method="_on_visibility_changed"]
+[connection signal="done" from="me/speech_bubble/speech_writer" to="me" method="_on_speech_writer_done"]

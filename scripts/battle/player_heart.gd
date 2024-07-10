@@ -49,18 +49,18 @@ func hurt(damage : float):
 
 func hurt_kr(damage):
 	audio.play("battle/hurt")
-	#karma_i_timer = karma_i_frames
-	#if(settings.player_save.player.current_hp > 1):
-		#if(settings.player_save.player.current_kr <= 40):
-			#settings.player_save.player.current_kr = max(0,settings.player_save.player.current_kr + damage)
-			#settings.player_save.player.current_hp = max(1,settings.player_save.player.current_hp - (damage + 1))
-		#else:
-			#settings.player_save.player.current_hp = max(0,settings.player_save.player.current_hp - 1)
-	#else:
-		#if(settings.player_save.player.current_kr > 0):
-			#settings.player_save.player.current_kr = max(0,settings.player_save.player.current_kr - 1)
-		#else:
-			#settings.player_save.player.current_hp = 0
+	karma_i_timer = karma_i_frames
+	if(settings.player_save.player.current_hp > 1):
+		if(settings.player_save.player.current_kr <= 40):
+			settings.player_save.player.current_kr = max(0,settings.player_save.player.current_kr + damage)
+			settings.player_save.player.current_hp = max(1,settings.player_save.player.current_hp - (damage + 1))
+		else:
+			settings.player_save.player.current_hp = max(0,settings.player_save.player.current_hp - 1)
+	else:
+		if(settings.player_save.player.current_kr > 0):
+			settings.player_save.player.current_kr = max(0,settings.player_save.player.current_kr - 1)
+		else:
+			settings.player_save.player.current_hp = 0
 
 func _process(delta : float):
 	check_hit()

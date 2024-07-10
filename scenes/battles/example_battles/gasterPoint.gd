@@ -15,6 +15,7 @@ func switch():
 	switch()
 
 func _on_visibility_changed():
+	audio.play("music/gasterbanger",audio.global_volume * 6)
 	get_node("speech_bubble").visible = true
 	get_node("speech_bubble/speech_writer").writer_text = "(sound:mono1)My fucking son!"
 	await get_tree().create_timer(2).timeout
